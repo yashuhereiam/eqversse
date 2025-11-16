@@ -126,11 +126,11 @@ Choice 1 (Good): [text]
 Choice 2 (Neutral): [text]
 Choice 3 (Bad): [text]
 """
-        response = generate_story(prompt)
-        lines = response.split('\n')
-        story = ""
-        choices = []
-        for line in lines:
+    response = generate_story(prompt)
+    lines = response.split('\n')
+    story = ""
+    choices = []
+    for line in lines:
             if line.startswith("Story:"):
                 story = line.replace("Story:", "").strip()
             elif line.startswith("Choice 1 (Good):"):
@@ -140,10 +140,10 @@ Choice 3 (Bad): [text]
             elif line.startswith("Choice 3 (Bad):"):
                 choices.append(("bad", line.replace("Choice 3 (Bad):", "").strip()))
         # Randomly select a choice to continue the story
-        if choices:
+    if choices:
             selected_choice = random.choice(choices)
             previous_choice = selected_choice[1]
-        full_story += story + " "
+    full_story += story + " "
     # Add conclusion based on traits
     if inattentiveness == "low" and hyperactivity == "low" and impulsiveness == "low":
         full_story += f"Nimbus smiled softly. 'You didn’t just travel through the realms,' he said. 'You discovered something powerful about yourself — your Focus Magic grows every time you pause and breathe. Remember this skill. It will follow you wherever you go.'"
@@ -254,12 +254,18 @@ def get_episode():
         5: "Conclusion"
     }
     title = episode_titles.get(episode_num, f"Episode {episode_num}")
+    
+    # Generate random sound effect
+    sound_effects = ['BOOM!', 'WHOOSH!', 'CRASH!', 'BANG!', 'SWOOSH!', 'THUD!', 'ZAP!', 'SPLASH!', 'RING!', 'HUM!']
+    sound_effect = random.choice(sound_effects)
+    
     return jsonify({
         'episode': episode_num,
         'title': title,
         'story': story,
         'choices': [choice[1] for choice in choices],  # list of choice texts
-        'xp': story_data['xp']
+        'xp': story_data['xp'],
+        'sound_effect': sound_effect
     })
 
 @app.route('/make_choice', methods=['POST'])
